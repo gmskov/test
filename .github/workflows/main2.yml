@@ -10,6 +10,9 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     
+    - name: Test
+      run: echo ${{ secrets.PRIVATE_KEY }}
+    
     - name: Deploy file
       uses: wlixcc/SFTP-Deploy-Action@v1.2.4
       with:
