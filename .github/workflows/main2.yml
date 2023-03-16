@@ -20,3 +20,4 @@ jobs:
           remote_path: '/gbar.digitize.ee/test'
           sftp_only: true
           password: 123QweAs
+          ssh_private_key: ${{ secrets.PRIVATE_KEY }}
