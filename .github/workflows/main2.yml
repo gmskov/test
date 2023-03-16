@@ -25,4 +25,4 @@ jobs:
           local_path: './server/dist/*'
           remote_path: '/gbar.digitize.ee/test'
           sftp_only: true
-          password: 123QweAs=
+          password: 123QweAs
