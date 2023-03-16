@@ -10,11 +10,13 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     
-    - name: Copy folder content recursively to remote
-      uses: garygrossgarten/github-action-scp@release
+    - name: Deploy file
+      uses: wlixcc/SFTP-Deploy-Action@v1.2.4
       with:
-        local: server/dist
-        remote: var/www/gbar.digitize.ee/test
-        host: 167.71.39.235
-        username: root
-        privateKey: ${{ secrets.PRIVATE_KEY }}
+          username: root
+          server: 167.71.39.235
+          port: 22
+          local_path: './server/dist/*'
+          remote_path: '/gbar.digitize.ee/test'
+          sftp_only: true
+          password: 123QweAs
