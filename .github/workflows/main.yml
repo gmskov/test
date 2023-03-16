@@ -20,4 +20,4 @@ jobs:
         remote: var/www/gbar.digitize.ee/test
         host: 167.71.39.235
         username: root
-        privateKey: ${{ PRIVATE_KEY }}
+        privateKey: ${{ secrets.PRIVATE_KEY }}
