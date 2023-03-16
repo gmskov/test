@@ -10,17 +10,13 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     
-    - name: Test
-      run: echo ${{ secrets.PRIVATE_KEY }}
-    
     - name: Deploy file
       uses: wlixcc/SFTP-Deploy-Action@v1.2.4
       with:
-          username: root
+          username: gbar
           server: 167.71.39.235
           port: 22
           local_path: './server/dist/*'
           remote_path: '/gbar.digitize.ee/test'
           sftp_only: true
-          password: 123QweAs
-          ssh_private_key: ${{ secrets.PRIVATE_KEY }}
+          password: 123QweAs=
