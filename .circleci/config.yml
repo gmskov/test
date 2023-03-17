@@ -21,7 +21,6 @@ jobs:
             ls -la
             npm install
             npm run build
-    parallelism: 4
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
