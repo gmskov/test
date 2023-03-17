@@ -15,6 +15,9 @@ jobs:
     steps:
       - checkout
       - run:
+          name: "LS"
+          command: ls -la
+      - run:
           name: "change dir"
           command: cd /erp-ui
       - run:
