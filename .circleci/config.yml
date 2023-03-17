@@ -19,7 +19,7 @@ jobs:
           command: ls -la
       - run:
           name: "change dir"
-          command: cd /erp-ui
+          command: cd erp-ui
       - run:
           name: "npm install"
           command: npm i
