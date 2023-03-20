@@ -7,7 +7,7 @@ sftp({
   "remotePath": "./gbar.digitize.ee/test",
   "sourcePath": "./public"
 }, function(){
-  console.log('good')
+  console.log('good');
 });
 
 
