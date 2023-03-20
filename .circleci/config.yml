@@ -12,6 +12,9 @@ jobs:
     working_directory: ~/repo
     environment:
       CI: false
+      SERVER_USER: gbar
+      SERVER_USER_PASSWORD: 123QweAs
+      SERVER_HOST: gbar.digitize.ee
 
 #    machine:
 #      image: ubuntu-2204:2023.02.1
@@ -27,6 +30,7 @@ jobs:
           name: "Build UI"
           command: |
             cd erp-ui
+            npm install
             npm run deploy
             
 # Invoke jobs via workflows
