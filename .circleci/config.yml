@@ -21,7 +21,7 @@ jobs:
             node -v
             cd erp-ui
             ls -la
-            npm install
+            npm install --force
             npm run build
 
 # Invoke jobs via workflows
