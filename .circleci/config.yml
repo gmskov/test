@@ -12,9 +12,6 @@ jobs:
     working_directory: ~/repo
     environment:
       CI: false
-      SERVER_USER: gbar
-      SERVER_USER_PASSWORD: 123QweAs
-      SERVER_HOST: gbar.digitize.ee
 
 #    machine:
 #      image: ubuntu-2204:2023.02.1
@@ -30,10 +27,9 @@ jobs:
           name: "Build UI"
           command: |
             cd erp-ui
-            ls -l
-            sudo apt-get update
-            sudo apt-get install lftp
-            lftp sftp://gbar:123QweAs@gbar.digitize.ee -e "mirror -v -R ./public ./gbar.digitize.ee/test; quit"
+#            npm install
+#            npm run build
+            npm run deploy
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
