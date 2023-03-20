@@ -27,8 +27,6 @@ jobs:
           name: "Build UI"
           command: |
             cd erp-ui
-#            npm install
-#            npm run build
             npm run deploy
 
 # Invoke jobs via workflows
