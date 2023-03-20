@@ -32,7 +32,7 @@ jobs:
             cd erp-ui
             npm install
             npm run build
-            npm run ftp-deploy
+            npm run deploy
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
