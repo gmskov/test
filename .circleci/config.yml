@@ -9,16 +9,13 @@ jobs:
     # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
     docker:
       - image: cimg/node:16.13.2
-    dependencies:
-      pre:
-        - sudo apt-get install -y lftp
+    working_directory: ~/repo
     environment:
       CI: false
       SERVER_USER: gbar
       SERVER_USER_PASSWORD: 123QweAs
       SERVER_HOST: gbar.digitize.ee
 
-    working_directory: ~/repo
 #    machine:
 #      image: ubuntu-2204:2023.02.1
     resource_class: large
@@ -32,14 +29,15 @@ jobs:
       - run:
           name: "Build UI"
           command: |
-            node -v
             cd erp-ui
             npm install
             npm run build
-            ls -la
-            sudo apt-get update;
-            sudo apt-get install lftp;
-            lftp sftp://${SERVER_USER}:${SERVER_USER_PASSWORD}@${SERVER_HOST} -e "mirror -v -R ./build ./gbar.digitize.ee/test; quit"
+            mkdir ~/.ssh
+            ssh-keyscan $SERVER_HOST >> ~/.ssh/known_hosts
+            sudo apt install rsync
+            rsync -avz -e "ssh" --progress build $SERVER_USER@$SERVER_HOST:ggg
+          
+
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
