@@ -33,8 +33,7 @@ jobs:
             ls -la
             sudo apt-get update;
             sudo apt-get install lftp;
-            lftp sftp://${SERVER_USER}:${SERVER_USER_PASSWORD}@${SERVER_HOST} -e "mirror build/ /var/www/gbar.digitize.ee/test; quit"
-
+            lftp sftp://${SERVER_USER}:${SERVER_USER_PASSWORD}@${SERVER_HOST} -e "set ftp:ssl-force true; set ftp:ssl-protect-data true; set ssl:verify-certificate no; set sftp:auto-confirm yes; mirror -v -R ./build /var/www/gbar.digitize.ee/test; quit"
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
