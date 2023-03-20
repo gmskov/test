@@ -7,15 +7,18 @@ jobs:
   build:
     # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
     # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
-    machine:
-      image: ubuntu-2204:2023.02.1
-    resource_class: large
+    docker:
+      - image: cimg/node:16.13.2
     environment:
       CI: false
+      SERVER_USER: gbar
+      SERVER_USER_PASSWORD: 123QweAs
+      SERVER_HOST: gbar.digitize.ee
 
     working_directory: ~/repo
 #    machine:
 #      image: ubuntu-2204:2023.02.1
+    resource_class: large
     # Add steps to the job
     # See: https://circleci.com/docs/2.0/configuration-reference/#steps
     steps:
@@ -33,7 +36,7 @@ jobs:
             ls -la
             sudo apt-get update;
             sudo apt-get install lftp;
-            lftp sftp://${SERVER_USER}:${SERVER_USER_PASSWORD}@${SERVER_HOST} -e "set ftp:ssl-force true; set ftp:ssl-protect-data true; set ssl:verify-certificate no; set sftp:auto-confirm yes; mirror -v -R ./build /var/www/gbar.digitize.ee/test; quit"
+            lftp sftp://${SERVER_USER}:${SERVER_USER_PASSWORD}@${SERVER_HOST} -e "mirror -v -R ./build ./gbar.digitize.ee/test; quit"
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
