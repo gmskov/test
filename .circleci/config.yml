@@ -8,8 +8,8 @@ jobs:
   build:
     # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
     # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
-    machine:
-      image: ubuntu-2204:2023.02.1
+    docker:
+      - image: cimg/node:16.19.1
     resource_class: 2xlarge
     # Add steps to the job
     # See: https://circleci.com/docs/2.0/configuration-reference/#steps
@@ -18,11 +18,11 @@ jobs:
       - run:
           name: "Build UI"
           command: |
+            node -v
             cd erp-ui
             ls -la
             npm install
             npm run build
-
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
