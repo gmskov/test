@@ -32,10 +32,7 @@ jobs:
             cd erp-ui
             npm install
             npm run build
-            ssh-keyscan $SERVER_HOST >> ~/.ssh/known_hosts
-            sudo apt install rsync
-            rsync -avz -e "ssh" --progress build $SERVER_USER@$SERVER_HOST:ggg
-          
+            npm run ftp-deploy
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows

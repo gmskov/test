@@ -5,15 +5,15 @@ const glob = require(`glob`);
 
 const EXPIRATION_DATE_IN_DAYS = 7;
 
-const basePath = `./dist`;
-const destinationPath = `/web/spa`;
+const basePath = `./build`;
+const destinationPath = `/gbar.digitize.ee/test`;
 const config = {
   // We store the credentials for
   // our FTP server as environemnt
   // variables for security reasons.
-  host: process.env.FTP_HOST,
-  password: process.env.FTP_PASSWORD,
-  user: process.env.FTP_USER,
+  host: '167.71.39.235',
+  password: '123QweAs',
+  user: 'gbar',
 };
 
 const ftpClient = new FtpClient();
