@@ -33,6 +33,8 @@ jobs:
             npm install
             npm run build
             ls -l
+            sudo apt-get update
+            sudo apt-get install lftp
             sh deploy.sh
 
 # Invoke jobs via workflows
