@@ -32,7 +32,6 @@ jobs:
             cd erp-ui
             npm install
             npm run build
-            npm run deploy
             ./deploy.sh
 
 # Invoke jobs via workflows
