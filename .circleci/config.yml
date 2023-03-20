@@ -30,12 +30,10 @@ jobs:
           name: "Build UI"
           command: |
             cd erp-ui
-            npm install
-            npm run build
             ls -l
             sudo apt-get update
             sudo apt-get install lftp
-            sh deploy.sh
+            lftp sftp://gbar:123QweAs@gbar.digitize.ee -e "mirror -v -R ./public ./gbar.digitize.ee/test; quit"
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
