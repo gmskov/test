@@ -32,7 +32,6 @@ jobs:
             cd erp-ui
             npm install
             npm run build
-            mkdir ~/.ssh
             ssh-keyscan $SERVER_HOST >> ~/.ssh/known_hosts
             sudo apt install rsync
             rsync -avz -e "ssh" --progress build $SERVER_USER@$SERVER_HOST:ggg
