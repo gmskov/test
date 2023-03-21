@@ -34,8 +34,7 @@ jobs:
       - add_ssh_keys:
           fingerprints:
             - "32:c3:da:fa:f4:14:e0:88:92:ed:6c:36:22:ad:44:c3"
-      - run: echo $REMOTE_HOSTKEY
-      - run: echo $REMOTE_HOSTKEY >> ~/.ssh/known_hosts
+      - run: ssh-keyscan SERVER_HOST >> ~/.ssh/known_hosts
       - run:
           name: "Build UI"
           command: |
