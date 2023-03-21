@@ -32,9 +32,9 @@ jobs:
           command: |
             cd erp-ui
             sudo apt update
-            sudo apt-get install rsync
-            rsync --version
-            rsync -avce ssh --delete ./test/ -o BatchMode=yes -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null root@167.71.39.235:/var/www/gbar.digitize.ee/test/
+            sudo apt-get install lftp
+            lftp -e "mirror -eRv /build/ /var/www/gbar.digitize.ee/test; quit;"  sftp://gbar:123QweAs@167.71.39.235:22
+    
 #            npm install
 #            npm run deploy
             
