@@ -20,9 +20,9 @@ jobs:
     # See: https://circleci.com/docs/2.0/configuration-reference/#steps
     steps:
       - checkout
-      - run:
-          name: Update NPM
-          command: "sudo npm install -g npm"
+#      - run:
+#          name: Update NPM
+#          command: "sudo npm install -g npm"
       - add_ssh_keys:
           fingerprints:
             - "32:c3:da:fa:f4:14:e0:88:92:ed:6c:36:22:ad:44:c3"
@@ -32,9 +32,9 @@ jobs:
           command: |
             cd erp-ui
             sudo apt update
-            sudo apt-get install lftp
+            sudo apt-get install rsync
             ls -l
-            lftp -u gbar,123QweAs -e "set ftp:use-feat false; mirror -R public/ /var/www/gbar.digitize.ee/test/; quit" 167.71.39.235:22
+            rsync -avce ssh --delete ./public/ -o BatchMode=yes -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null gbar@167.71.39.235:/var/www/gbar.digitize.ee/test/
 
 #            npm install
 #            npm run deploy
