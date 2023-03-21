@@ -19,6 +19,9 @@ jobs:
     # Add steps to the job
     # See: https://circleci.com/docs/2.0/configuration-reference/#steps
     steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "32:c3:da:fa:f4:14:e0:88:92:ed:6c:36:22:ad:44:c3"
       - checkout
       - run:
           name: Update NPM
@@ -27,9 +30,12 @@ jobs:
           name: "Build UI"
           command: |
             cd erp-ui
-            npm install
-            npm run deploy
-            
+            sudo apt update
+            sudo apt-get install rsync
+#            npm install
+#            npm run deploy
+            rsync -avce ssh --delete ./test/ -o BatchMode=yes -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null gbar@167.71.39.235:/var/www/gbar.digitize.ee/test/
+
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
