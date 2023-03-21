@@ -34,8 +34,8 @@ jobs:
             sudo apt update
             sudo apt-get install rsync
             ls -l
-#            rsync -avce ./public/ -o BatchMode=yes -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null gbar@167.71.39.235:/var/www/gbar.digitize.ee/test/
             rsync -e "ssh -o StrictHostKeyChecking=no" -arvc gbar@167.71.39.235:~/var/www/gbar.digitize.ee/test
+#            rsync -avce ./public/ -o BatchMode=yes -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null gbar@167.71.39.235:/var/www/gbar.digitize.ee/test/
 #            npm install
 #            npm run deploy
 
