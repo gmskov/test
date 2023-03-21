@@ -22,6 +22,11 @@ jobs:
       - add_ssh_keys:
           fingerprints:
             - "32:c3:da:fa:f4:14:e0:88:92:ed:6c:36:22:ad:44:c3"
+      - run:
+          name: add to known hosts
+          command: |
+            sudo ssh-keyscan -H 167.71.39.235 >> ~/.ssh/known_hosts
+            sudo echo "42.42.64.64 167.71.39.235 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBOn9zkBUq0/yokmfvTVU4f/chGv0dkrmwHf55wnkJOgLbGZCJlB6r1GGOSB/xKmpw8KZPW82yPYc0X52j75Fw2s=" >> ~/.ssh/known_hosts
       - checkout
       - run:
           name: Update NPM
