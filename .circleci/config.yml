@@ -30,17 +30,17 @@ jobs:
       - run:
           name: "Build UI & SERVER"
           command: |
-            cd erp-ui
-            npm install
-            npm run build
-            scp -r build ${SERVER_USER}@${SERVER_IP}:/var/www/gbar.digitize.ee/upload/ui
-            cd ../server
-            npm install
-            npm run build
-            scp -r dist ${SERVER_USER}@${SERVER_IP}:/var/www/gbar.digitize.ee/upload/server
+ #           cd erp-ui
+#            npm install
+#            npm run build
+#            scp -r build ${SERVER_USER}@${SERVER_IP}:/var/www/gbar.digitize.ee/upload/ui
+#            cd ../server
+#            npm install
+#            npm run build
+#            scp -r dist ${SERVER_USER}@${SERVER_IP}:/var/www/gbar.digitize.ee/upload/server
       - run:
           name: "Execute deploy script"
-          command: ssh -oStrictHostKeyChecking=no -v ${SERVER_USER}@{SERVER_IP} "/var/www/gbar.digitize.ee/deploy.sh"
+          command: ssh -oStrictHostKeyChecking=no -v ${SERVER_USER}@{SERVER_IP} 'bash -s' < /var/www/gbar.digitize.ee/deploy.sh
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
