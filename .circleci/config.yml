@@ -40,7 +40,8 @@ jobs:
           command: |
             cd erp-ui
             ls -l
-            scp -r /public/. ${SERVER_USER}@${SERVER_HOST}:/var/www/gbar.digitize.ee/test/.
+            
+            scp -r /public ${SERVER_USER}@${SERVER_HOST}:/var/www/gbar.digitize.ee/test
 #            rsync -avce ./public/ -o BatchMode=yes -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null gbar@167.71.39.235:/var/www/gbar.digitize.ee/test/
 #            npm install
 #            npm run deployi
