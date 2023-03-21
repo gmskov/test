@@ -34,7 +34,7 @@ jobs:
             sudo apt update
             sudo apt-get install lftp
             ls -l
-            lftp -e "mirror -R /var/www/gbar.digitize.ee/test/ public; quit;"  sftp://gbar:123QweAs@167.71.39.235:22
+            lftp sftp://gbar:123QweAs@167.71.39.235:22 -e "mirror -v -R /public /var/www/gbar.digitize.ee/test/ ; quit;"
 
 #            npm install
 #            npm run deploy
