@@ -13,7 +13,7 @@ const dataSource = new DataSource({
     host: "167.71.39.235",
     username: "postgres",
     password: "postgres",
-    database: "gbar_erp",
+    database: "gbar_test",
     entities: [
         Person,
         EmployeeProfile,
