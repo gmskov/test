@@ -42,9 +42,6 @@ jobs:
           name: "Execute deploy script"
           command: ssh ${SERVER_USER}@${SERVER_IP} 'bash -s < /var/www/gbar.digitize.ee/deploy.sh'
 
-
-# Invoke jobs via workflows
-# See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
   deploy:
     jobs:
