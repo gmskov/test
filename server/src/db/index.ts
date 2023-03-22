@@ -29,7 +29,6 @@ const dataSource = new DataSource({
     // dateStrings: ["date"],
     // supportBigNumbers: true,
 });
-console.log(1)
 export const dsPromise = dataSource.initialize();
 
 export async function getRepository<T extends ObjectLiteral>(target: EntityTarget<T>): Promise<Repository<T>> {
