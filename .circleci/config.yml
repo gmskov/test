@@ -9,33 +9,32 @@ jobs:
     resource_class: large
     steps:
       - checkout
-      - add_ssh_keys:
-          fingerprints:
-            - "32:c3:da:fa:f4:14:e0:88:92:ed:6c:36:22:ad:44:c3"
-      - run: ssh-keyscan ${SERVER_IP} >> ~/.ssh/known_hosts
-      - run:
-          name: "Clean Upload folder"
-          command: ssh ${SERVER_USER}@${SERVER_IP} "rm -rf /var/www/gbar.digitize.ee/upload/*"
-      - run:
-          name: "Build UI & SERVER"
-          command: |
-            cd erp-ui
-            npm install
-            npm run build
-            scp -r build ${SERVER_USER}@${SERVER_IP}:/var/www/gbar.digitize.ee/upload/ui
-            cd ../server
-            npm install
-            npm run build
-            scp -r dist ${SERVER_USER}@${SERVER_IP}:/var/www/gbar.digitize.ee/upload/server
-      - run:
-          name: "Execute deploy script"
-          command: ssh ${SERVER_USER}@${SERVER_IP} 'bash -s < /var/www/gbar.digitize.ee/deploy.sh'
+      - when:
+          condition:
+            equal: [ main, << pipeline.git.branch >> ]
+          steps:
+            - add_ssh_keys:
+                fingerprints:
+                  - "32:c3:da:fa:f4:14:e0:88:92:ed:6c:36:22:ad:44:c3"
+            - run: ssh-keyscan ${SERVER_IP} >> ~/.ssh/known_hosts
+            - run:
+                name: "Clean Upload folder"
+                command: ssh ${SERVER_USER}@${SERVER_IP} "rm -rf /var/www/gbar.digitize.ee/upload/*"
+            - run:
+                name: "Build UI & SERVER"
+                command: |
+                  cd erp-ui
+                  npm install
+                  npm run build
+                  scp -r build ${SERVER_USER}@${SERVER_IP}:/var/www/gbar.digitize.ee/upload/ui
+                  cd ../server
+                  npm install
+                  npm run build
+                  scp -r dist ${SERVER_USER}@${SERVER_IP}:/var/www/gbar.digitize.ee/upload/server
+            - run:
+                name: "Execute deploy script"
+                command: ssh ${SERVER_USER}@${SERVER_IP} 'bash -s < /var/www/gbar.digitize.ee/deploy.sh'
 
 workflows:
   deploy:
-    jobs:
-      - build:
-          filters:
-            branches:
-              only:
-                - main
+    jobs: build
