@@ -8,7 +8,7 @@ sftp({
   "sourcePath": "./public"
 }, function(){
   console.log('good');
-  console.log('good3');
+  console.log('good2');
 });
 
 
