@@ -51,7 +51,7 @@ export const ImageViewer = ({file}: ImageViewerProps) => {
                 }}
             >
                 {imgUrl && <img
-                    alt=""
+                    alt="Image"
                     src={imgUrl}
                     ref={imgRef}
                     onDragStart={(e) => e.preventDefault()}

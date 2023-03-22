@@ -6,17 +6,22 @@ import {axiosInstance} from "@pankod/refine-simple-rest";
 import {login, LoginPayload} from "./api";
 
 export const TOKEN_KEY = "token";
+export const ROLE_KEY = "role";
 
 export const authProvider: AuthProvider = {
     login: async (payload: LoginPayload) => {
         let token = localStorage.getItem(TOKEN_KEY);
-        if (token == null) {
-            token = await login(payload);
+        const role = localStorage.getItem(ROLE_KEY);
+        if (token == null || role == null) {
+            const authResp = await login(payload);
+            token = authResp.token
             localStorage.setItem(TOKEN_KEY, token);
+            localStorage.setItem(ROLE_KEY, authResp.role);
         }
     },
     logout: () => {
         localStorage.removeItem(TOKEN_KEY);
+        localStorage.removeItem(ROLE_KEY);
         return Promise.resolve();
     },
     checkError: (error) => {

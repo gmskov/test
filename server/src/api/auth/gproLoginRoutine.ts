@@ -68,5 +68,5 @@ export async function gproLoginRoutine(payload: Record<string, unknown>): Promis
 
     console.log({user});
 
-    return {token: createJwt(user)};
+    return {token: createJwt(user), role: user.role};
 }

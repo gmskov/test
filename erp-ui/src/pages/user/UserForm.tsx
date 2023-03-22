@@ -1,5 +1,6 @@
-import {Button, Col, Form, FormProps, Input, Row} from "@pankod/refine-antd";
+import {Button, Col, Form, FormProps, Select, Input, Row,} from "@pankod/refine-antd";
 import {ChangeEventHandler, useState} from "react";
+import {UserRole} from '../../core/constants';
 
 export type UserFormProps = {
     formProps: FormProps;
@@ -7,6 +8,12 @@ export type UserFormProps = {
 }
 
 const ROW_GUTTER = 16;
+const roleOptions = Object.values(UserRole).map(it => {
+    return {
+        value: it,
+        label: it
+    }
+})
 
 export const UserForm = ({formProps, action}: UserFormProps) => {
     const isEdit = action === "edit";
@@ -64,6 +71,16 @@ export const UserForm = ({formProps, action}: UserFormProps) => {
                 <Col span={12}>
                     <Form.Item name="email" label="Email">
                         <Input type="email"/>
+                    </Form.Item>
+                </Col>
+            </Row>
+            <Row gutter={ROW_GUTTER}>
+                <Col span={12}>
+                    <Form.Item name="role" label="Роль">
+                        <Select
+                          style={{ width: 120 }}
+                          options={roleOptions}
+                        />
                     </Form.Item>
                 </Col>
             </Row>

@@ -107,7 +107,7 @@ export function Resource<Entity extends ObjectLiteral>(
             else {
                 const result = await repo.save({
                     ...existing,
-                    payload,
+                    ...payload,
                     id
                 });
                 await afterUpdate?.(payload, result, repo, tx);
