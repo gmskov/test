@@ -19,12 +19,15 @@ jobs:
       - run:
           name: "test"
           command: |
+            mkdir test
+            cd test
             touch .env
             echo "DB_HOST=${DB_HOST}" >> .env
             echo "DB_USERNAME=${DB_USERNAME}" >> .env
             echo "DB_PASSWORD=${DB_PASSWORD}" >> .env
             echo "DB_DATABASE=${DB_DATABASE}" >> .env
             cat .env
+            ls -l
 #      - run:
 #         name: "Build UI & SERVER"
 #          command: |
