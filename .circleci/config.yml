@@ -27,6 +27,7 @@ jobs:
             cd ../server
             npm install
             npm run build
+            cp package.json package-lock.json dist
             touch dist/.env
             echo "DB_HOST=${DB_HOST}" >> dist/.env
             echo "DB_USERNAME=${DB_USERNAME}" >> dist/.env
@@ -34,9 +35,9 @@ jobs:
             echo "DB_DATABASE=${DB_DATABASE}" >> dist/.env
 
             scp -r dist ${SERVER_USER}@${SERVER_IP}:/var/www/gbar/upload/server
-#      - run:
-#          name: "Execute deploy script"
-#          command: ssh ${SERVER_USER}@${SERVER_IP} 'bash -s < /var/www/gbar/deploy.sh'
+      - run:
+          name: "Execute deploy script"
+          command: ssh ${SERVER_USER}@${SERVER_IP} 'bash -s < /var/www/gbar/deploy.sh'
 
 workflows:
   deploy:
