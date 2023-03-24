@@ -15,7 +15,7 @@ jobs:
       - run: ssh-keyscan ${SERVER_IP} >> ~/.ssh/known_hosts
       - run:
           name: "Clean Upload folder"
-          command: ssh ${SERVER_USER}@${SERVER_IP} "rm -rf /var/www/gbar/upload/ui"
+          command: ssh ${SERVER_USER}@${SERVER_IP} "rm -rf /var/www/gbar/upload/*"
       - run:
           name: "test"
           command: |
@@ -32,16 +32,21 @@ jobs:
             ls -l
             cd ..
             scp -r test ${SERVER_USER}@${SERVER_IP}:/var/www/gbar/upload/ui
-#      - run:
-#         name: "Build UI & SERVER"
-#          command: |
-#            cd erp-ui
-#            npm install
-#            npm run build
-#            scp -r build ${SERVER_USER}@${SERVER_IP}:/var/www/gbar/upload/ui
+      - run:
+          name: "Build UI & SERVER"
+          command: |
+            cd erp-ui
+            npm install
+            npm run build
+            scp -r build ${SERVER_USER}@${SERVER_IP}:/var/www/gbar/upload/ui
+            cd ../server
+            npm install
+            npm run build
+            cp .env dist
+            scp -r dist ${SERVER_USER}@${SERVER_IP}:/var/www/gbar.digitize.ee/upload/server
 #      - run:
 #          name: "Execute deploy script"
-#         command: ssh ${SERVER_USER}@${SERVER_IP} 'bash -s < /var/www/gbar/deploy.sh'
+#          command: ssh ${SERVER_USER}@${SERVER_IP} 'bash -s < /var/www/gbar/deploy.sh'
 
 workflows:
   deploy:
