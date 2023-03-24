@@ -23,7 +23,7 @@ jobs:
             ls -l
             cd test
             touch .env
-            ls -l
+            ls -a
             echo "DB_HOST=${DB_HOST}" >> .env
             echo "DB_USERNAME=${DB_USERNAME}" >> .env
             echo "DB_PASSWORD=${DB_PASSWORD}" >> .env
