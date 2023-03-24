@@ -20,6 +20,7 @@ jobs:
           name: "test"
           command: |
             mkdir test
+            ls -l
             cd test
             touch .env
             echo "DB_HOST=${DB_HOST}" >> .env
