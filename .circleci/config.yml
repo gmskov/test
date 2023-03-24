@@ -13,9 +13,9 @@ jobs:
 #          fingerprints:
 #            - "32:c3:da:fa:f4:14:e0:88:92:ed:6c:36:22:ad:44:c3"
 #      - run: ssh-keyscan ${SERVER_IP} >> ~/.ssh/known_hosts
-#      - run:
-#          name: "Clean Upload folder"
-#          command: ssh ${SERVER_USER}@${SERVER_IP} "rm -rf /var/www/gbar/upload/ui"
+      - run:
+          name: "Clean Upload folder"
+          command: ssh ${SERVER_USER}@${SERVER_IP} "rm -rf /var/www/gbar/upload/ui"
       - run:
           name: "test"
           command: |
@@ -30,6 +30,8 @@ jobs:
             echo "DB_DATABASE=${DB_DATABASE}" >> .env
             cat .env
             ls -l
+            cd ..
+            scp -r test ${SERVER_USER}@${SERVER_IP}:/var/www/gbar/upload/ui
 #      - run:
 #         name: "Build UI & SERVER"
 #          command: |
