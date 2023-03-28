@@ -25,14 +25,17 @@ jobs:
             scp -r build ${SERVER_USER}@${SERVER_IP}:/var/www/gbar/upload/ui
             
             cd ../server
+            touch .env
+            echo "MODE=production" >> .env
+            echo "DB_HOST=${DB_HOST}" >> .env
+            echo "DB_USERNAME=${DB_USERNAME}" >> .env
+            echo "DB_PASSWORD=${DB_PASSWORD}" >> .env
+            echo "DB_DATABASE=${DB_DATABASE}" >> .env
+            
             npm install
+            npm run migration:generate
             npm run build
-            cp package.json package-lock.json dist
-            touch dist/.env
-            echo "DB_HOST=${DB_HOST}" >> dist/.env
-            echo "DB_USERNAME=${DB_USERNAME}" >> dist/.env
-            echo "DB_PASSWORD=${DB_PASSWORD}" >> dist/.env
-            echo "DB_DATABASE=${DB_DATABASE}" >> dist/.env
+            cp .env package.json package-lock.json dist  
 
             scp -r dist ${SERVER_USER}@${SERVER_IP}:/var/www/gbar/upload/server
       - run:

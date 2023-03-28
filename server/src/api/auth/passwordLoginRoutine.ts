@@ -15,5 +15,5 @@ export async function passwordLoginRoutine(loginPayload: Record<string, unknown>
         throw new Unauthorized("Invalid login or password");
     }
 
-    return {token: createJwt(user), role: user.role};
+    return {token: createJwt(user)};
 }

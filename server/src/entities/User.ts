@@ -10,11 +10,6 @@ import {
 } from "typeorm";
 import {type GProUser} from "./GProUser";
 
-export enum UserRole {
-    ADMIN = 'admin',
-    USER = 'user',
-}
-
 @Entity()
 export class User {
     @PrimaryGeneratedColumn("uuid")
@@ -50,12 +45,4 @@ export class User {
 
     @Column({nullable: true})
     photo?: string;
-
-    @Column({
-        type: "enum",
-        enum: UserRole,
-        nullable: false,
-        default: UserRole.USER
-    })
-    role: UserRole;
 }
