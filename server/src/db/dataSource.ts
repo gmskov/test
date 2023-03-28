@@ -27,7 +27,7 @@ const dataSource = new DataSource({
     Password
   ],
   migrationsTableName: 'migrations',
-  migrations: ["dist/migrations/*.js"],
+  migrations: ["migrations/*.js"],
   // logging: true,
   synchronize: !isProduction(),
   // dateStrings: ["date"],
