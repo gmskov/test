@@ -18,4 +18,7 @@ export class Invoice extends BaseEntity {
 
     @Column({nullable: true})
     note?: string;
+
+    @Column({nullable: true})
+    test?: string;
 }
