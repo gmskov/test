@@ -25,7 +25,7 @@ jobs:
             scp -r build ${SERVER_USER}@${SERVER_IP}:/var/www/gbar/upload/ui
             
             cd ../server
-            touch .env
+            echo "" > .env
             echo "MODE=production" >> .env
             echo "DB_HOST=${DB_HOST}" >> .env
             echo "DB_USERNAME=${DB_USERNAME}" >> .env
