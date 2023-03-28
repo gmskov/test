@@ -24,4 +24,7 @@ export class Invoice extends BaseEntity {
 
     @Column({nullable: true})
     test2?: string;
+
+    @Column({nullable: true})
+    test3?: string;
 }
