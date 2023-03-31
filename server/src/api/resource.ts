@@ -61,7 +61,7 @@ export function Resource<Entity extends ObjectLiteral>(
             const result = await repo.findOne({
                 where: {
                     ...buildParentCondition(req.params),
-                    id: req.params['id'] as any
+                    id: req.params["id"] as any
                 },
                 relations,
             })
@@ -78,7 +78,7 @@ export function Resource<Entity extends ObjectLiteral>(
         await transaction(async (repo, tx) => {
             let payload = {...req.body} as any;
             if (parentIdField != null) {
-                payload[parentIdField] = req.params['parentId'];
+                payload[parentIdField] = req.params["parentId"];
             }
             const result = await repo.save(payload);
             await afterCreate?.(payload, result, repo, tx);

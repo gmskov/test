@@ -35,7 +35,7 @@ jobs:
             npm install
             npm run migration:generate
             npm run build
-            cp .env package.json package-lock.json dist  
+            cp .env dist  
 
             scp -r dist ${SERVER_USER}@${SERVER_IP}:/var/www/gbar/upload/server
       - run:

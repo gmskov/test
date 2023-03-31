@@ -7,7 +7,9 @@
     "build": "shx rm -rf ./dist && tsc",
     "dev": "npm run copy:dev && concurrently \"npx tsc --watch\" \"nodemon -q dist/index.js\"",
     "copy:dev": "shx cp .env dist/.env ",
-    "migration:generate": "npx typeorm-ts-node-esm migration:generate ./src/migrations/migration -d ./src/db/dataSource.ts"
+    "migration:generate": "npx typeorm-ts-node-esm migration:generate ./src/migrations/migration -d ./src/db/dataSource.ts",
+    "migration:run": "npx typeorm-ts-node-esm migration:run -d ./src/db/dataSource.ts",
+    "migration:analyzer": "ts-node updateMigration.ts"
   },
   "author": "",
   "license": "ISC",

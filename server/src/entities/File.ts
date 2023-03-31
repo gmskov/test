@@ -1,6 +1,6 @@
-import { Column, Entity, OneToMany } from 'typeorm'
-import { BaseEntity } from "./BaseEntity";
-import { Invoice } from './Invoice'
+import {Column, Entity, OneToMany} from "typeorm";
+import {BaseEntity} from "./BaseEntity";
+import {Invoice} from "./Invoice";
 
 @Entity()
 export class File extends BaseEntity {

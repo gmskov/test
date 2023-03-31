@@ -1,16 +1,16 @@
 import express from "express";
 import cors from "cors";
 import {apiRouter} from "./api";
-import fileUpload from 'express-fileupload';
+import fileUpload from "express-fileupload";
 
 const app = express();
 
 app.use(express.json());
 app.use(fileUpload({
-    defCharset: 'utf8',
-    defParamCharset: 'utf8',
+    defCharset: "utf8",
+    defParamCharset: "utf8",
     useTempFiles : false,
-    tempFileDir : '/tmp/'
+    tempFileDir : "/tmp/"
 }));
 app.use(cors({
     allowedHeaders: ["Content-Type", "Authorization"],

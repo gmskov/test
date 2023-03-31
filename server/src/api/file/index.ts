@@ -10,9 +10,9 @@ import {File} from "../../entities/File";
 
 export const fileRouter = Router();
 
-fileRouter.post('/', asyncHandler(async (req: Request, res: Response): Promise<any> => {
+fileRouter.post("/", asyncHandler(async (req: Request, res: Response): Promise<any> => {
     if (!req.files || Object.keys(req.files).length === 0) {
-        return res.status(400).send('No files were uploaded.');
+        return res.status(400).send("No files were uploaded.");
     }
 
     if (!Array.isArray(req.files.file) && req.files.file != undefined) {
@@ -24,15 +24,15 @@ fileRouter.post('/', asyncHandler(async (req: Request, res: Response): Promise<a
             size: file.size
         } as any;
         const result = await repo.save(payload);
-        res.json({status: 'success', fileId: result.id});
+        res.json({status: "success", fileId: result.id});
     }
     else {
-        throw new Error('File upload error');
+        throw new Error("File upload error");
     }
 
 }));
 
-fileRouter.get('/:id', asyncHandler(async (req: Request, res: Response): Promise<any> => {
+fileRouter.get("/:id", asyncHandler(async (req: Request, res: Response): Promise<any> => {
     const repo = await getRepository(File)
     const result = await repo.findOneBy({id: req.params.id as any})
     if (result == null) {

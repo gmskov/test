@@ -8,7 +8,6 @@ import {User} from "../entities/User";
 import {GProUser} from "../entities/GProUser";
 import {Password} from "../entities/Password";
 import config from "../config";
-import {isProduction} from '../core/utils'
 
 const dataSource = new DataSource({
   type: "postgres",
@@ -26,10 +25,10 @@ const dataSource = new DataSource({
     GProUser,
     Password
   ],
-  migrationsTableName: 'migrations',
-  migrations: ["migrations/*.js"],
+  migrationsTableName: "migrations",
+  migrations: ["src/migrations/*.ts"],
   // logging: true,
-  synchronize: !isProduction(),
+  synchronize: false,
   // dateStrings: ["date"],
   // supportBigNumbers: true,
 });

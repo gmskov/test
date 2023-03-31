@@ -1,4 +1,4 @@
-import {Column, Entity, ManyToOne} from 'typeorm'
+import {Column, Entity, ManyToOne} from "typeorm"
 import {BaseEntity} from "./BaseEntity";
 import {File} from "./File";
 
@@ -18,10 +18,4 @@ export class Invoice extends BaseEntity {
 
     @Column({nullable: true})
     note?: string;
-
-    @Column({nullable: true})
-    test?: string;
-
-    @Column({nullable: true})
-    test2?: string;
 }

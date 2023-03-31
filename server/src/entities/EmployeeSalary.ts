@@ -3,8 +3,8 @@ import {EmployeeProfile} from "./EmployeeProfile";
 import {Column, Entity, ManyToOne} from "typeorm";
 
 export enum SalaryBaseUnit {
-    Hour = 'hour',
-    Month = 'month',
+    Hour = "hour",
+    Month = "month",
 }
 
 @Entity()
