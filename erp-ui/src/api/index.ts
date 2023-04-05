@@ -1,5 +1,5 @@
 import {axiosInstance} from "@pankod/refine-simple-rest";
-export const API_BASE_URL = "http://localhost:4567/api";
+export const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || '';
 
 axiosInstance.defaults.baseURL = API_BASE_URL;
 
@@ -9,19 +9,14 @@ export type LoginPayload = {
     password: string;
 }
 
-export type AuthResponse = {
-    token: string;
-    role: string;
-}
-
-export const login = async({method, ...payload}: LoginPayload): Promise<AuthResponse> => {
-    const {data: {token,role}} = await axiosInstance.post(`/login/${method}`, payload, {
+export const login = async({method, ...payload}: LoginPayload): Promise<string> => {
+    const {data: {token}} = await axiosInstance.post(`/login/${method}`, payload, {
         withCredentials: true,
     });
     if (token == null) {
         throw new Error("No token received");
     }
-    return {token, role};
+    return token;
 }
 
 export const fileUrl = (id: string) => {

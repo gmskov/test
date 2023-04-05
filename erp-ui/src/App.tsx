@@ -17,7 +17,6 @@ import {SettingOutlined} from "@ant-design/icons";
 import {ColorModeContextProvider} from "contexts";
 import {OffLayoutArea} from "components/offLayoutArea";
 import {authProvider} from "./authProvider";
-import { accessControlProvider } from './accessControlProvider';
 import {PersonCreate} from "./components/PersonCreate";
 import {EmployeeList} from "./components/employees/EmployeeList";
 import {EmployeeShow} from "./resources/employee/EmployeeShow";
@@ -97,7 +96,6 @@ function App() {
                                 }
                             }
                         ]}
-                        accessControlProvider={accessControlProvider}
                     />
                 </ConfigProvider>
             </RefineKbarProvider>

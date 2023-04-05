@@ -1,62 +1,54 @@
-import {Migration, MigrationExecutor} from "typeorm";
+import {Column, DataSource, Entity, Migration, MigrationExecutor, PrimaryColumn} from "typeorm";
 import {CommandUtils} from "typeorm/commands/CommandUtils";
-import * as path from "path";
 import {TableColumn} from "typeorm/schema-builder/table/TableColumn";
+import {execSync} from "child_process";
+import * as path from "path";
 import * as fs from "fs";
 
 const DATASOURCE_FILE_PATH = "./src/db/dataSource.ts";
 const MIGRATION_FILES_PATH = "./src/migrations";
-const MIGRATION_FILE_PREFIX = "migration"
 const TMP_FOLDER_PATH = "./src/tmp";
+const MIGRATION_CODE_COLUMN = {
+  name: "code",
+  type: "bytea",
+  isNullable: true,
+  default: null
+} as TableColumn
 
-class GBarMigration extends Migration {
+interface GBarMigration extends Migration {
   code: string | null
 }
 
 class AppMigrationExecutor extends MigrationExecutor {
   private migrationQueryRunner = this.queryRunner || this.connection.createQueryRunner();
-  private migrationTableName = this.connection.options.migrationsTableName
+  readonly migrationTableName;
 
-  async getAllExecutedMigrations(): Promise<GBarMigration[]> {
-    if (!this.migrationTableName) return []
-
-    const { schema } = this.connection.driver;
-    const database = this.connection.driver.database;
-
-    const migrationsTable = this.connection.driver.buildTableName(this.migrationTableName, schema, database);
-    return await this.connection.manager
-    .createQueryBuilder(this.migrationQueryRunner)
-    .select()
-    .orderBy(this.connection.driver.escape("id"), "DESC")
-    .from(migrationsTable, this.migrationTableName)
-    .getRawMany();
+  constructor (dataSource: DataSource, migrationsTableName: string) {
+    super(dataSource);
+    this.migrationTableName = migrationsTableName;
   }
 
-  async addMigrationColumn(name: string): Promise<void> {
-    if (!this.migrationTableName) return
+  async ensureMigrationCodeColumn(): Promise<void> {
+    const columnExists = await this.migrationQueryRunner.hasColumn(this.migrationTableName, MIGRATION_CODE_COLUMN.name)
 
-    const isColumnExist = await this.migrationQueryRunner.hasColumn(this.migrationTableName, name)
-
-    if (!isColumnExist) {
-      const migrationCodeColumn = {
-        name,
-        type: "bytea",
-        isNullable: true,
-        default: null
-      } as TableColumn
-      await this.migrationQueryRunner.addColumn(this.migrationTableName, migrationCodeColumn)
+    if (!columnExists) {
+      await this.migrationQueryRunner.addColumn(this.migrationTableName, MIGRATION_CODE_COLUMN)
     }
   }
 
-  async saveFileToExecutedMigration(migrations: GBarMigration[]) {
+  async storeExecutedMigrationCode(migrations: GBarMigration[]): Promise<void> {
     const notUpdatedMigration = migrations.filter(it => it.code == null)
+
     if (notUpdatedMigration.length) {
       for (const it of notUpdatedMigration) {
-        const path = `${MIGRATION_FILES_PATH}/${it.timestamp}-${MIGRATION_FILE_PREFIX}.ts`
+        const fileName = this.getMigrationFileName(it);
+        const path = `${MIGRATION_FILES_PATH}/${fileName}.ts`
 
         if (fs.existsSync(path)) {
-          const migrationData = fs.readFileSync(path, "utf8");
-          await this.migrationQueryRunner.query(`UPDATE ${this.migrationTableName} SET "code" = $1 WHERE "id" = ${it.id}`, [Buffer.from(migrationData, "binary")])
+          const migrationCode = fs.readFileSync(path, "utf8");
+          await this.connection.createQueryRunner().query(`UPDATE ${this.migrationTableName} SET "code" = $1 WHERE "id" = $2`, [Buffer.from(migrationCode, "binary"), it.id])
+        } else {
+          throw new Error("Migration file not found")
         }
       }
     }
@@ -66,9 +58,13 @@ class AppMigrationExecutor extends MigrationExecutor {
     const revertMigrationList: GBarMigration[] = []
 
     for (const it of migrations) {
-      const path = `${MIGRATION_FILES_PATH}/${it.timestamp}-${MIGRATION_FILE_PREFIX}.ts`
+      const fileName = this.getMigrationFileName(it);
+      const path = `${MIGRATION_FILES_PATH}/${fileName}.ts`
 
-      if (fs.existsSync(path)) { break; }
+      // Break on first existing migration file
+      if (fs.existsSync(path)) {
+        break;
+      }
       revertMigrationList.push(it)
     }
 
@@ -76,9 +72,10 @@ class AppMigrationExecutor extends MigrationExecutor {
       if (!fs.existsSync(TMP_FOLDER_PATH)) fs.mkdirSync(TMP_FOLDER_PATH);
 
       for (const it of revertMigrationList) {
-        const path = `${TMP_FOLDER_PATH}/${it.timestamp}-${MIGRATION_FILE_PREFIX}.ts`
+        const fileName = this.getMigrationFileName(it);
+        const path = `${TMP_FOLDER_PATH}/${fileName}.ts`
 
-        if (it.code) {
+        if (it.code != null) {
           await fs.writeFile(path, it.code, "binary", () => {})
         }
       }
@@ -94,34 +91,69 @@ class AppMigrationExecutor extends MigrationExecutor {
       });
       await dataSource.initialize();
 
-
-      for (const it of revertMigrationList) {
-        const path = `${TMP_FOLDER_PATH}/${it.timestamp}-${MIGRATION_FILE_PREFIX}.ts`
-        if (fs.existsSync(path)) {
-          await this.undoLastMigration()
-        }
+      for (const _it of revertMigrationList) {
+        await this.undoLastMigration()
       }
 
       fs.rmSync(TMP_FOLDER_PATH, { recursive: true, force: true });
+      await dataSource.destroy()
     }
+  }
+
+  getMigrationFileName(migration: Migration) {
+    const name = migration.name.replace(migration.timestamp.toString(), "");
+    return `${migration.timestamp}-${name}`
   }
 }
 
 (async () => {
   const dataSource = await CommandUtils.loadDataSource(path.resolve(process.cwd(), DATASOURCE_FILE_PATH));
+  const {migrationsTableName = "migrations", entities} = dataSource.options;
+  const MigrationClass = createMigrationClass(migrationsTableName)
+
   dataSource.setOptions({
     subscribers: [],
     synchronize: false,
     migrationsRun: false,
     dropSchema: false,
-    logging: ["query", "error", "schema"]
+    logging: ["query", "error", "schema"],
+    entities: [
+      ...entities as any[],
+      MigrationClass,
+    ]
   });
   await dataSource.initialize();
 
-  const migrationExecutor = new AppMigrationExecutor(dataSource);
-  await migrationExecutor.addMigrationColumn("code");
-  const executedMigrations = await migrationExecutor.getAllExecutedMigrations();
-  await migrationExecutor.saveFileToExecutedMigration(executedMigrations);
+  const migrationExecutor = new AppMigrationExecutor(dataSource, migrationsTableName);
+  await migrationExecutor.ensureMigrationCodeColumn();
+  const executedMigrations = await dataSource.getRepository(MigrationClass).find({
+    order: {
+      id: 'DESC',
+    },
+  });
   await dataSource.destroy()
   await migrationExecutor.revertMigration(executedMigrations);
+  execSync(`npx typeorm-ts-node-esm migration:run -d ./src/db/dataSource.ts`,   {stdio: 'inherit'})
+  await dataSource.initialize();
+  const updatedExecutedMigrations = await dataSource.getRepository(MigrationClass).find();
+  await migrationExecutor.storeExecutedMigrationCode(updatedExecutedMigrations);
 })()
+
+function createMigrationClass(migrationsTableName: string) {
+  @Entity({name: migrationsTableName})
+  class CustomMigration implements GBarMigration {
+    @PrimaryColumn({type: "integer"})
+    id: number | undefined;
+
+    @Column()
+    name: string;
+
+    @Column()
+    timestamp: number;
+
+    @Column()
+    code: string;
+
+  }
+  return CustomMigration
+}
