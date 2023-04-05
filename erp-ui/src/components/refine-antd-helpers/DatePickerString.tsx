@@ -2,7 +2,7 @@ import {DatePicker, DatePickerProps} from "@pankod/refine-antd";
 import dayjs from "dayjs";
 import {useCallback} from "react";
 
-export type DatePickerStringProps = Omit<DatePickerProps, "value" | "onChange"> & {
+export type DatePickerStringProps = DatePickerProps & {
     value?: string;
     onChange?: (value: string | null) => void
     valueFormat: string;

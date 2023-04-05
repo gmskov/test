@@ -9,6 +9,7 @@ import {GProUser} from "../entities/GProUser";
 import {Password} from "../entities/Password";
 import config from "../config";
 import {isProduction} from "../core/utils";
+import path from "path";
 
 const dataSource = new DataSource({
   type: "postgres",
@@ -27,7 +28,7 @@ const dataSource = new DataSource({
     Password
   ],
   migrationsTableName: "migrations",
-  migrations: ["src/migrations/*.ts"],
+  migrations: [path.join(__dirname, '../migrations/*{.ts,.js}')],
   logging: !isProduction(),
   synchronize: false,
 });
